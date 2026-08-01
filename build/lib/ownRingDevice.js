@@ -1,10 +1,6 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OwnRingDevice = void 0;
-const util_1 = __importDefault(require("util"));
 const ring_client_api_1 = require("ring-client-api");
 class OwnRingDevice {
     constructor(location, adapter, apiClient, kind, shortId, description) {
@@ -44,6 +40,7 @@ class OwnRingDevice {
             case ring_client_api_1.RingCameraKind.floodlight_pro:
             case ring_client_api_1.RingCameraKind.spotlightw_v2:
             case ring_client_api_1.RingCameraKind.jbox_v1:
+            case "doorbell_sunray":
             case "df_doorbell_clownfish":
             case "lpd_v3":
                 return `doorbell`;
@@ -67,7 +64,9 @@ class OwnRingDevice {
                 return `intercom`;
             default:
                 adapter.log.error(`Device with Type ${deviceType} not yet supported, please inform dev Team via Github`);
-                adapter.log.info(`Unsupported Device Info: ${util_1.default.inspect(device, false, 1)}`);
+                adapter.log.info(`Unsupported Device Info: id=${device?.id}, type=${deviceType}, ` +
+                    `model=${device?.model ?? "unknown"}, ` +
+                    `description=${device?.initialData?.description ?? "unknown"}`);
         }
         return "unknown";
     }

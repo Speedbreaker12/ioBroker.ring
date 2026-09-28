@@ -788,11 +788,7 @@ export class OwnRingCamera extends OwnRingDevice {
             await this._adapter.upsertState(`${this.eventsChannelId}.doorbell`, COMMON_EVENTS_DOORBELL, false);
         }
         await this._adapter.upsertState(`${this.eventsChannelId}.type`, COMMON_EVENTS_TYPE, '');
-        await this._adapter.upsertState(
-            `${this.eventsChannelId}.detectionType`,
-            COMMON_EVENTS_DETECTIONTYPE,
-            '',
-        );
+        await this._adapter.upsertState(`${this.eventsChannelId}.detectionType`, COMMON_EVENTS_DETECTIONTYPE, '');
         await this._adapter.upsertState(`${this.eventsChannelId}.created_at`, COMMON_EVENTS_MOMENT, 0);
         await this._adapter.upsertState(`${this.eventsChannelId}.message`, COMMON_EVENTS_MESSAGE, '');
 

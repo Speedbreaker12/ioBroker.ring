@@ -104,6 +104,7 @@ Install this adapter using ioBroker repositories.
 -->
 ### **WORK IN PROGRESS**
 - (Speedbreaker12) Camera event states are created during device setup so consumers can subscribe before the first motion or doorbell event
+- (Speedbreaker12) `renew_registration` now renews the cached FCM push credentials instead of reconnecting with the same push token
 
 ### 7.0.2 (2026-09-20)
 - (mcm1957) dependencies have been corrected

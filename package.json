@@ -81,7 +81,8 @@
     "release-patch": "release-script patch --yes",
     "release-minor": "release-script minor --yes",
     "release-major": "release-script major --yes",
-    "update-packages": "npx npm-check-updates --upgrade && cd src-tab && npx npm-check-updates --upgrade"
+    "update-packages": "npx npm-check-updates --upgrade && cd src-tab && npx npm-check-updates --upgrade",
+    "prepare": "npm run build:backend"
   },
   "bugs": {
     "url": "https://github.com/iobroker-community-adapters/ioBroker.ring/issues"

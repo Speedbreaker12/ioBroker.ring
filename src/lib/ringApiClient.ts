@@ -38,7 +38,7 @@ export class RingApiClient {
         return true;
     }
 
-    public async getApi(): Promise<RingApi> {
+    public async getApi(renewPushRegistration: boolean = false): Promise<RingApi> {
         if (this._api) {
             return this._api;
         }
@@ -74,6 +74,10 @@ export class RingApiClient {
                     });
             },
         );
+        if (renewPushRegistration && this._api.restClient._internalOnly_pushNotificationCredentials) {
+            this.debug('Renew Ring push notification credentials');
+            this._api.restClient._internalOnly_pushNotificationCredentials = undefined;
+        }
         const profile: (ProfileResponse & ExtendedResponse) | void = await this._api
             .getProfile()
             .catch((reason: any): void => this.handleApiError(reason));
@@ -110,7 +114,7 @@ export class RingApiClient {
         this.refreshing = true;
         this._api?.disconnect();
         this._api = undefined;
-        if (!(await this.retrieveLocations())) {
+        if (!(await this.retrieveLocations(!initial))) {
             if (initial) {
                 this.adapter.terminate(`Failed to retrieve any locations for your ring Account.`);
             }
@@ -175,12 +179,12 @@ export class RingApiClient {
         }
     }
 
-    private async retrieveLocations(): Promise<boolean> {
+    private async retrieveLocations(renewPushRegistration: boolean = false): Promise<boolean> {
         this.debug(`Retrieve Locations`);
         try {
             // getApi() belongs inside the try: it throws on a missing refresh token, and
             // refreshAll() is built around this method returning false, not rejecting.
-            const api: RingApi = await this.getApi();
+            const api: RingApi = await this.getApi(renewPushRegistration);
             const locs = await api.getLocations();
             if (!locs.length) {
                 this.debug('getLocations was successful, but received no locations');

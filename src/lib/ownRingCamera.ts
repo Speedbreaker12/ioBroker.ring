@@ -778,7 +778,21 @@ export class OwnRingCamera extends OwnRingDevice {
             true,
         );
 
+        // Create the complete Events state tree up front. Event states used to be
+        // created lazily on the first matching push notification, which means consumers
+        // cannot reliably subscribe to the very first event after a new device path is
+        // introduced (for example when an unknown device becomes a supported doorbell).
         await this._adapter.upsertState(`${this.eventsChannelId}.ondemand`, COMMON_ON_DEMAND, false);
+        await this._adapter.upsertState(`${this.eventsChannelId}.motion`, COMMON_MOTION, false);
+        await this._adapter.upsertState(`${this.eventsChannelId}.doorbell`, COMMON_EVENTS_DOORBELL, false);
+        await this._adapter.upsertState(`${this.eventsChannelId}.type`, COMMON_EVENTS_TYPE, '');
+        await this._adapter.upsertState(
+            `${this.eventsChannelId}.detectionType`,
+            COMMON_EVENTS_DETECTIONTYPE,
+            '',
+        );
+        await this._adapter.upsertState(`${this.eventsChannelId}.created_at`, COMMON_EVENTS_MOMENT, 0);
+        await this._adapter.upsertState(`${this.eventsChannelId}.message`, COMMON_EVENTS_MESSAGE, '');
 
         await this._adapter.upsertState(
             `${this.snapshotChannelId}.auto`,

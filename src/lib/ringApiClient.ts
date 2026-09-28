@@ -99,13 +99,15 @@ export class RingApiClient {
         if (this.adapter.config.renew_registration > 0) {
             this._refreshInterval =
                 this.adapter.setInterval(
-                    this.refreshAll.bind(this),
+                    (): void => {
+                        void this.refreshAll(false, true);
+                    },
                     this.adapter.config.renew_registration * 3600 * 1000,
                 ) ?? null;
         }
     }
 
-    public async refreshAll(initial: boolean = false): Promise<void> {
+    public async refreshAll(initial: boolean = false, renewPushRegistration: boolean = false): Promise<void> {
         /**
          *  TH 2022-05-30: It seems like Ring Api drops its socket connection from time to time,
          *  so we should reconnect ourselves
@@ -114,7 +116,7 @@ export class RingApiClient {
         this.refreshing = true;
         this._api?.disconnect();
         this._api = undefined;
-        if (!(await this.retrieveLocations(!initial))) {
+        if (!(await this.retrieveLocations(renewPushRegistration))) {
             if (initial) {
                 this.adapter.terminate(`Failed to retrieve any locations for your ring Account.`);
             }

@@ -57,8 +57,13 @@ export class RingApiClient {
             ffmpegPath: pathToFfmpeg ? pathToFfmpeg : undefined,
             // debug: true
         });
+        let ignorePushCredentialRemovalToken = false;
         this._api.onRefreshTokenUpdated.subscribe(
             (data: { oldRefreshToken?: string | undefined; newRefreshToken: string }): void => {
+                if (ignorePushCredentialRemovalToken) {
+                    ignorePushCredentialRemovalToken = false;
+                    return;
+                }
                 this.adapter.log.info(
                     `Received new Refresh Token. Will use the new one until the token in config gets changed`,
                 );
@@ -76,6 +81,7 @@ export class RingApiClient {
         );
         if (renewPushRegistration && this._api.restClient._internalOnly_pushNotificationCredentials) {
             this.debug('Renew Ring push notification credentials');
+            ignorePushCredentialRemovalToken = true;
             this._api.restClient._internalOnly_pushNotificationCredentials = undefined;
         }
         const profile: (ProfileResponse & ExtendedResponse) | void = await this._api

@@ -103,6 +103,7 @@ Install this adapter using ioBroker repositories.
 	### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+- (Speedbreaker12) Ring API connections are disconnected on adapter unload to avoid stale event subscriptions in compact mode
 - (Speedbreaker12) Camera event states are created during device setup so consumers can subscribe before the first motion or doorbell event
 - (Speedbreaker12) `renew_registration` now renews the cached FCM push credentials instead of reconnecting with the same push token
 

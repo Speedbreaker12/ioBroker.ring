@@ -102,6 +102,10 @@ Install this adapter using ioBroker repositories.
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+- (Speedbreaker12) Event states are created during device setup so the first realtime event can be consumed immediately
+- (Speedbreaker12) `renew_registration` now renews cached push credentials and Ring API connections are disconnected on unload
+
 ### 7.0.2 (2026-09-20)
 - (mcm1957) dependencies have been corrected
 

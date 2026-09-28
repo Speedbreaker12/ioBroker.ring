@@ -994,6 +994,20 @@ export class OwnRingCamera extends OwnRingDevice {
         });
         this._ringDevice.onNewNotification.subscribe({
             next: (ding: PushNotificationDingV2): void => {
+                // Some newer doorbells (e.g. doorbell_sunray) may deliver a doorbell
+                // notification whose Android category is not the legacy Ding category.
+                // ring-client-api's onDoorbellPressed observable filters strictly by that
+                // category, so use the payload's explicit ding subtype as a safe fallback.
+                // Motion notifications use subtypes such as motion, other_motion or human.
+                if (
+                    ding.data.event.ding.subtype === 'ding' &&
+                    ding.android_config.category !== 'com.ring.pn.live-event.ding'
+                ) {
+                    this.debug(
+                        `Doorbell fallback for notification category "${ding.android_config.category}" with subtype "ding"`,
+                    );
+                    this.onDoorbell(ding).catch(e => this.catcher('Cannot react on doorbell fallback', e));
+                }
                 this.onNotify(ding).catch(e => this.catcher('Cannot react on notification', e));
             },
             error: (err: Error): void => {

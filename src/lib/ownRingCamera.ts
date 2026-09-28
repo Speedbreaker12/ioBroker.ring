@@ -784,7 +784,9 @@ export class OwnRingCamera extends OwnRingDevice {
         // introduced (for example when an unknown device becomes a supported doorbell).
         await this._adapter.upsertState(`${this.eventsChannelId}.ondemand`, COMMON_ON_DEMAND, false);
         await this._adapter.upsertState(`${this.eventsChannelId}.motion`, COMMON_MOTION, false);
-        await this._adapter.upsertState(`${this.eventsChannelId}.doorbell`, COMMON_EVENTS_DOORBELL, false);
+        if (this._ringDevice.isDoorbot) {
+            await this._adapter.upsertState(`${this.eventsChannelId}.doorbell`, COMMON_EVENTS_DOORBELL, false);
+        }
         await this._adapter.upsertState(`${this.eventsChannelId}.type`, COMMON_EVENTS_TYPE, '');
         await this._adapter.upsertState(
             `${this.eventsChannelId}.detectionType`,

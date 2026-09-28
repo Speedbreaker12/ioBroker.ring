@@ -185,6 +185,12 @@ export class RingApiClient {
             this.adapter.clearTimeout(this._retryTimeout);
             this._retryTimeout = null;
         }
+        this._api?.disconnect();
+        this._api = undefined;
+        this.cameras = {};
+        this.intercoms = {};
+        this._locations = {};
+        this.refreshing = false;
     }
 
     private async retrieveLocations(renewPushRegistration: boolean = false): Promise<boolean> {

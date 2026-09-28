@@ -778,7 +778,13 @@ export class OwnRingCamera extends OwnRingDevice {
             true,
         );
 
+        // Create event trigger states up front so consumers can subscribe before
+        // the first matching push notification arrives.
         await this._adapter.upsertState(`${this.eventsChannelId}.ondemand`, COMMON_ON_DEMAND, false);
+        await this._adapter.upsertState(`${this.eventsChannelId}.motion`, COMMON_MOTION, false);
+        if (this._ringDevice.isDoorbot) {
+            await this._adapter.upsertState(`${this.eventsChannelId}.doorbell`, COMMON_EVENTS_DOORBELL, false);
+        }
 
         await this._adapter.upsertState(
             `${this.snapshotChannelId}.auto`,

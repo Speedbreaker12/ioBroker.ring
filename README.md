@@ -103,7 +103,7 @@ Install this adapter using ioBroker repositories.
 	### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
-- (Speedbreaker12) Camera event states are created during device setup so consumers can subscribe before the first motion or doorbell event
+- (Speedbreaker12) Motion and doorbell event trigger states are created during device setup so consumers can subscribe before the first event
 
 ### 7.0.2 (2026-09-20)
 - (mcm1957) dependencies have been corrected
